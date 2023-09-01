@@ -62,7 +62,7 @@ exports.createUserDetail = async (req, res) => {
 exports.getUserDetails = async (req, res) => {
   try {
     console.log(req.params.id);
-    const userInfo = await UserInfo.findOne(req.params.id);
+    const userInfo = await UserInfo.findOne({ userId: req.params.id });
     if (!userInfo) throw new Error("User Info does not exist");
     res.json(userInfo);
   } catch (err) {
