@@ -20,21 +20,16 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: [
-      "Tables",
-      "Chairs",
-      "Electrical Appliances",
-      "Home Decor",
-      "Vehicle",
-      "Almirah",
-      "Bed",
-    ],
   },
   condition: {
     type: String,
     required: true,
   },
   images: [String],
+  sold: {
+    type: Boolean,
+    default: false,
+  },
 });
 const Products = mongoose.model("Products", productSchema);
 module.exports = Products;
