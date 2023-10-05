@@ -24,10 +24,10 @@ const ProductDetail = () => {
   }, [productId]);
 
   if (prod === null) {
-    // Data is loading, you can show a loading indicator here
+    // Data is loading, show a loading indicator here
     return <div>Loading...</div>;
   }
-
+  console.log(prod);
   // Once prod has data, render the component with the product details
   return (
     <Layout>
@@ -45,22 +45,27 @@ const ProductDetail = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-1/2 mx-auto pl-4">
-          <h2 className="text-2xl font-semibold">{prod.name}</h2>
-          <p className="text-gray-600">${prod.price}</p>
-          <p className="mt-8">{prod.description}</p>
-          <p className="text-green-500 "> {prod.condition}</p>
-          <p className="text-blue-500 font-semibold">
-            Category: {prod.category}
-          </p>
-          <Link to={`/checkout/${prod._id}`}>
-            <button className=" mt-8 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-4">
-              Buy
+        <div className="w-1/2 mx-auto pl-4 ">
+          <div className="text-center mt-10">
+            <h2 className="text-2xl font-semibold">{prod.name}</h2>
+            <p className="text-gray-600 text-xl">${prod.price}</p>
+            <p className="mt-5">{prod.description}</p>
+            <p className="text-green-500 text-xl ">
+              {" "}
+              Condition: {prod.condition}
+            </p>
+            <p className="text-blue-500 font-semibold text-xl">
+              Category: {prod.category}
+            </p>
+            <Link to={`/checkout/${prod._id}`}>
+              <button className="text-2xl mt-8 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-4">
+                Buy
+              </button>
+            </Link>
+            <button className=" text-2xl mt-8 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
+              Add to Cart
             </button>
-          </Link>
-          <button className=" mt-8 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
-            Add to Cart
-          </button>
+          </div>
         </div>
       </div>
     </Layout>

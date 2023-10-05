@@ -31,16 +31,34 @@ exports.getOneProduct = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
   try {
+    // res.send("Hello");
+    // console.log(req.files.filename);
+    // console.log(req.body);
+    // console.log(req.file.path);
+    // req.body.images[0] = req.file.path;
+    console.log(req);
+    console.log(req.body);
+    console.log(req.file);
+    console.log(req.body.images);
+    // console.log(...req.body.images);
+    // const filePaths = req.files.map((file) => file.path);
+
+    // req.body.images = filePaths;
+    // req.body["images"] = filePaths;
+    req.body["images"] = "uploads/" + req.file.filename;
+
     const product = new Products(req.body);
     await product.save();
     res.status(201).json(product);
   } catch (err) {
+    console.log(err);
     res.status(404).json({
       status: "fail",
       message: err,
     });
   }
 };
+
 exports.updateProduct = async (req, res) => {
   try {
     const product = await Products.findByIdAndUpdate(req.params.id, {

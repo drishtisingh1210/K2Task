@@ -5,7 +5,9 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 // const morgan= require("")
 const cors = require("cors");
+
 const app = express();
+
 // if(process.env.NODE_ENV==='development'){
 //     app.use(morgan("dev"));
 // }
@@ -14,6 +16,7 @@ const corsOptions = {
   methods: "GET, PUT, PATCH, POST",
   credentials: true,
 };
+app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/user", router);
