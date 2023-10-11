@@ -13,7 +13,7 @@ function Layout({ children }) {
 
       <SearchBox />
       <Navbar />
-      <div className="ml-32 mb-10 ">{children}</div>
+      <div className="ml-32 mb-10 min-h-[75vh]">{children}</div>
 
       <Footer />
     </div>

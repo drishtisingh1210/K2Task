@@ -3,12 +3,16 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Layout from "./Layout/Layout";
 import { Carousel } from "react-responsive-carousel";
-
+import { addItemsToCart } from "../actions/cartActions";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const [prod, setProd] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const Url = `http://localhost:3001/api/product/${productId}`;
@@ -28,7 +32,20 @@ const ProductDetail = () => {
     return <div>Loading...</div>;
   }
   console.log(prod);
+  const id = productId;
   // Once prod has data, render the component with the product details
+
+  const addToCartHandle = () => {
+    dispatch(addItemsToCart(id));
+    toast.success("Product added succesfully", {
+      theme: "dark",
+      position: "top-center",
+    });
+  };
+  const handleBuy = () => {
+    dispatch(addItemsToCart(productId));
+  };
+
   return (
     <Layout>
       <div className="flex mt-20 min-h-screen">
@@ -58,13 +75,20 @@ const ProductDetail = () => {
               Category: {prod.category}
             </p>
             <Link to={`/checkout/${prod._id}`}>
-              <button className="text-2xl mt-8 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-4">
+              <button
+                onClick={handleBuy}
+                className="text-2xl mt-8 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-4"
+              >
                 Buy
               </button>
             </Link>
-            <button className=" text-2xl mt-8 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
+            <button
+              onClick={addToCartHandle}
+              className=" text-2xl mt-8 bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-"
+            >
               Add to Cart
             </button>
+            <ToastContainer position="top-center" theme="dark" />
           </div>
         </div>
       </div>

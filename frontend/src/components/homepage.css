@@ -1,0 +1,10 @@
+@keyframes slide-up {
+  0% {
+    transform: translateY(10px); /* Start slightly lower */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); /* Slide up to its original position */
+    opacity: 1;
+  }
+}

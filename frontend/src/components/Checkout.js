@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import Layout from "./Layout/Layout";
 import jsPDF from "jspdf";
+import { resetState } from "../actions/cartActions";
+// import { response } from "../../../backend/app";
 
 const Checkout = () => {
   const { productId } = useParams();
+  const { cartItems } = useSelector((state) => state.cart);
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
-    const apiUrl = `http://localhost:3001/api/product/${productId}`;
+  const dispatch = useDispatch();
+  // const productIds = [];
 
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        setProduct(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching product data:", error);
-      });
-  }, [productId]);
+  // useEffect(() => {
+  //   const apiUrl = `http://localhost:3001/api/product/${productId}`;
+
+  //   axios
+  //     .get(apiUrl)
+  //     .then((response) => {
+  //       setProduct(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching product data:", error);
+  //     });
+  // }, [productId]);
 
   const generatePdf = () => {
     const pdf = new jsPDF();
@@ -35,25 +42,45 @@ const Checkout = () => {
     pdf.save(filename);
   };
 
+  // const handlePay = () => {
+  //   const soldUrl = `http://localhost:3001/api/product/checkProductstatus/${productId}`;
+  //   axios.get(soldUrl).then((response) => {
+  //     if (response.data.sold) {
+  //       alert("This product is already sold out.");
+  //     } else {
+  //       updateProductStauts();
+  //       // generatePdf();
+
+  //       setTimeout(() => {
+  //         console.log(product);
+  //         navigate("/payment-slip", { state: { product } });
+  //       }, 2000);
+  //     }
+  //   });
+  // };
+  const productIds = cartItems.map((item) => {
+    return item.product;
+  });
+
   const handlePay = () => {
-    const soldUrl = `http://localhost:3001/api/product/checkProductstatus/${productId}`;
-    axios.get(soldUrl).then((response) => {
-      if (response.data.sold) {
-        alert("This product is already sold out.");
-      } else {
-        updateProductStauts();
-        // generatePdf();
-
-        setTimeout(() => {
-          console.log(product);
-          navigate("/payment-slip", { state: { product } });
-        }, 2000);
-      }
+    cartItems.map((item) => {
+      const soldUrl = `http://localhost:3001/api/product/checkProductstatus/${item.product}`;
+      axios.get(soldUrl).then((response) => {
+        if (response.data.sold) {
+          alert("This product is already sold out.");
+        } else {
+          // Assuming updateProductStatus is a function you have defined elsewhere
+          updateProductStauts(item.product); // Make sure this function is available in the scope
+          setTimeout(() => {
+            console.log(product); // Assuming product is defined in the scope
+            navigate("/payment-slip", { state: { cartItems } });
+          }, 1000);
+        }
+      });
     });
+    dispatch(resetState());
   };
-  //   const amount = product.price + 100.15 + 80;
-
-  const updateProductStauts = () => {
+  const updateProductStauts = (productId) => {
     axios
       .put(`http://localhost:3001/api/product/mark-as-sold/${productId}`)
       .then((response) => {
@@ -67,38 +94,65 @@ const Checkout = () => {
         console.error("Error marking product as sold:", error);
       });
   };
+  //   const amount = product.price + 100.15 + 80;
 
+  const handlePayment = async () => {
+    try {
+      const payUrl = "http://localhost:3001/api/product/payment";
+      const payload = {
+        productIds: productIds,
+      };
+      const response = await axios.put(payUrl, payload);
+      if (response.data.success) {
+        console.log("Payment Successful.");
+        setTimeout(() => {
+          console.log(product); // Assuming product is defined in the scope
+          navigate("/payment-slip", { state: { cartItems } });
+        }, 2000);
+        dispatch(resetState());
+        // productIds = [];
+      } else {
+        console.log("Payment Failed");
+      }
+    } catch (error) {
+      console.log("Some Error in Payment:", error);
+    }
+  };
+
+  console.log(cartItems);
   return (
     <Layout>
       <div className="mt-20 min-h-screen">
         <div className="border p-4">
           <h1 className="border-b-2 pb-2 text-xl font-semibold">Summary</h1>
-          {product ? (
-            <div className="flex items-center">
-              <img
-                src="/images/furniture.jpg"
-                alt={product.name}
-                className="w-16 h-16 mr-4 rounded-full"
-              />
-              <div>
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-gray-600">
-                  Description: {product.description}
-                </p>
-                <p className="text-gray-600">Total Price: ${product.price}</p>
-                {/* <p className="text-gray-600">Tax: $100.15</p>
-                <p className="text-gray-600">Shipping Charge: $80</p> */}
-                {/* <p className="text-gray-600">Total amount:  </p> */}
-                {/* Add more product details here */}
+          {cartItems ? (
+            cartItems.map((item) => (
+              <div className="flex items-center">
+                <img
+                  src="/images/furniture.jpg"
+                  alt={item.name}
+                  className="w-16 h-16 mr-4 rounded-full"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold">{item.name}</h3>
+                  <p className="text-gray-600">
+                    Description: {item.description}
+                  </p>
+                  <p className="text-gray-600">Total Price: ${item.price}</p>
+                  {/* <p className="text-gray-600">Tax: $100.15</p>
+    <p className="text-gray-600">Shipping Charge: $80</p> */}
+                  {/* <p className="text-gray-600">Total amount:  </p> */}
+                  {/* Add more product details here */}
+                </div>
               </div>
-            </div>
+            ))
           ) : (
             <p>Loading...</p>
           )}
-          {/* <Link to="/continueShopping"> */}
+
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-4 "
-            onClick={handlePay}
+            onClick={handlePayment}
           >
             Pay
           </button>
@@ -108,7 +162,6 @@ const Checkout = () => {
           >
             Print Order
           </button> */}
-          {/* </Link> */}
         </div>
       </div>
     </Layout>
