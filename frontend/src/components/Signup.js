@@ -21,7 +21,13 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  ```// Sign up page Submit handle button ```;
+  ```// !--------------------------------
+    //!
+   //!
+  //!Sign up page Submit handle button ```;
+  //! Calls useraction from Action file
+
+  //!--------------------------------------
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +60,7 @@ const Signup = () => {
     }
   };
 
-  ```// END```;
+  ```//! END```;
 
   return (
     <div>
