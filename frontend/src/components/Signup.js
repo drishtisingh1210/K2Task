@@ -21,6 +21,8 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  ```// Sign up page Submit handle button ```;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // here data is going to call register from userAction and then to user Reducer in Reducer folder
@@ -51,6 +53,8 @@ const Signup = () => {
       console.log("Error:", err);
     }
   };
+
+  ```// END```;
 
   return (
     <div>
