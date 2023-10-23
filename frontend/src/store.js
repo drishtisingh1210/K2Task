@@ -4,9 +4,11 @@ import thunk from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 
 import { cartReducer } from "./reducer/cartReducer";
+import { userReducer } from "./reducer/userReducer";
 
 const reducer = combineReducers({
   cart: cartReducer,
+  user: userReducer,
 });
 
 const localStorageCartItems = localStorage.getItem("cartItems")
@@ -22,10 +24,9 @@ let initialState = {
 const middleware = [thunk];
 
 const store = configureStore({
-  reducer: {
-    cart: cartReducer,
-  },
+  reducer,
   preloadedState: initialState,
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(...middleware),
   devTools: process.env.NODE_ENV !== "production",

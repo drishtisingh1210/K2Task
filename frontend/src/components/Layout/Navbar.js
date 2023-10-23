@@ -1,18 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Heroicons from "heroicons-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+// import axios from "axios";
+import { toast } from "react-toastify";
+import axios from "../axios-config";
+import { logout } from "../../actions/userActions";
 // import Layout from "./Layout";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const { cartItems } = useSelector((state) => state.cart);
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  // const [logout, setLogout] = useState(false)
   // console.log(cartItems);
+
   const len = cartItems
     ? cartItems.length === 0
       ? null
       : cartItems.length
     : null;
+
+  const handleLogout = async (req, res) => {
+    try {
+      const response = await axios.get("/api/user/logout");
+
+      if (response.status === 200) {
+        toast.success("Logged out Succesfully", {
+          theme: "dark",
+          position: "top-center",
+        });
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to Logout", {
+        theme: "dark",
+        position: "top-center",
+      });
+    }
+  };
+
   return (
     <div className="mt-20 h-screen w-32 bg-gray-800 text-white fixed top-0 left-0 flex flex-col">
       {/* Navbar content */}
@@ -84,13 +113,17 @@ const Navbar = () => {
           </Link>
         </ul>
       </div>
-
       {/* Footer */}
-      {/* <div className="p-2">
-        <button className="w-full bg-red-600 hover:bg-red-700 py-2 rounded">
-          SellBell
-        </button>
-      </div> */}
+      {isAuthenticated && user ? (
+        <div className="p-2">
+          <button
+            className="w-full bg-red-600 hover:bg-red-700 py-2 rounded"
+            onClick={handleLogout}
+          >
+            Log Out
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

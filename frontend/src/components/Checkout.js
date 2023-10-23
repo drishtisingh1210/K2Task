@@ -10,6 +10,7 @@ import { resetState } from "../actions/cartActions";
 const Checkout = () => {
   const { productId } = useParams();
   const { cartItems } = useSelector((state) => state.cart);
+  const { isAuthenticated } = useSelector((state) => state.user);
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,10 +72,8 @@ const Checkout = () => {
         } else {
           // Assuming updateProductStatus is a function you have defined elsewhere
           updateProductStauts(item.product); // Make sure this function is available in the scope
-          setTimeout(() => {
-            console.log(product); // Assuming product is defined in the scope
-            navigate("/payment-slip", { state: { cartItems } });
-          }, 1000);
+          // Assuming product is defined in the scope
+          navigate("/payment-slip", { state: { cartItems } });
         }
       });
     });
@@ -129,7 +128,11 @@ const Checkout = () => {
             cartItems.map((item) => (
               <div className="flex items-center">
                 <img
-                  src="/images/furniture.jpg"
+                  src={
+                    item.image
+                      ? `http://localhost:3001/${item.image}`
+                      : "/images/furniture.jpg"
+                  }
                   alt={item.name}
                   className="w-16 h-16 mr-4 rounded-full"
                 />

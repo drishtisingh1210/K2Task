@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeItemsFromCart } from "../actions/cartActions";
 import Layout from "./Layout/Layout";
 import CartItem from "./CartItem";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cartItems } = useSelector((state) => state.cart);
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const deleteCartItems = (id) => {

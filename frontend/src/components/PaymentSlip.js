@@ -20,7 +20,7 @@ const PaymentSlip = () => {
           compress: true,
           floatPrecision: "smart",
           precision: 16,
-          userUnit: 0.1, // Adjust this value to scale the content
+          // Adjust this value to scale the content
         });
         pdf.addImage(imgData, "PNG", 0, 0);
         pdf.save("paymentSlip.pdf");
@@ -35,13 +35,13 @@ const PaymentSlip = () => {
           <p>There is Some Problem</p>
         </div>
       ) : (
-        <div>
+        <div ref={reportRef} className="w-[50vh]">
           <h2 className="text-2xl font-semibold mb-4 flex justify-center">
             Payment Slip
           </h2>
           {cartItems &&
             cartItems.map((product) => (
-              <div key={product.product_id} ref={reportRef}>
+              <div key={product.product_id}>
                 <table className="table-auto border p-11 flex justify-center">
                   <tbody className="text-xl">
                     <tr>

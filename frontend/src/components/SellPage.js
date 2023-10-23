@@ -443,6 +443,7 @@ import axios from "axios";
 import * as Heroicons from "heroicons-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const SellPage = () => {
   // const [showSuccessCard, setShowSuccessCard] = useState(false);
@@ -454,6 +455,7 @@ const SellPage = () => {
     category: "",
   });
   const [file, setFile] = useState([]);
+  const navigate = useNavigate();
   // console.log(formData.name);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -489,10 +491,13 @@ const SellPage = () => {
       const response = await axios.post(
         "http://localhost:3001/api/product/create",
         submitData,
+
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+          withCredentials: true,
+          credentials: "include",
         }
       );
       if (response.status === 201) {
@@ -516,6 +521,7 @@ const SellPage = () => {
       }
     } catch (error) {
       console.error("Error:", error);
+      navigate("/signup");
     }
   };
   return (

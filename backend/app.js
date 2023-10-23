@@ -7,7 +7,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const cors = require("cors");
 const path = require("path");
 const app = express();
-
+const cookieParser = require("cookie-parser");
 // if(process.env.NODE_ENV==='development'){
 //     app.use(morgan("dev"));
 // }
@@ -19,6 +19,7 @@ const corsOptions = {
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/user", router);
 app.use("/api/product", productRouter);
