@@ -10,7 +10,7 @@ const CateogoryDisplay = () => {
   const { category } = useParams();
 
   useEffect(() => {
-    const apiUrl = `http://localhost:3001/api/product/category/${category}`;
+    const apiUrl = `${process.env.REACT_APP_SERVER_URL}/api/product/category/${category}`;
 
     const fetchData = async () => {
       try {

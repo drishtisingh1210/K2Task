@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
         <img
           src={
             product.images[0]
-              ? `http://localhost:3001/${product.images[0]}`
+              ? `${process.env.REACT_APP_SERVER_URL}/${product.images[0]}`
               : "/images/furniture.jpg"
           }
           alt={product.name}

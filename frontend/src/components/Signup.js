@@ -21,14 +21,6 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  ```// !--------------------------------
-    //!
-   //!
-  //!Sign up page Submit handle button ```;
-  //! Calls useraction from Action file
-
-  //!--------------------------------------
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // here data is going to call register from userAction and then to user Reducer in Reducer folder
@@ -39,6 +31,10 @@ const Signup = () => {
       toast.success("Thanks for registering", {
         theme: "dark",
         position: "top-center",
+      });
+      setFormData({
+        email: "",
+        password: "",
       });
       navigate("/");
       // if (response.status === 201) {
@@ -59,8 +55,6 @@ const Signup = () => {
       console.log("Error:", err);
     }
   };
-
-  ```//! END```;
 
   return (
     <div>

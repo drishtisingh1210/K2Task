@@ -65,7 +65,7 @@ const Checkout = () => {
 
   const handlePay = () => {
     cartItems.map((item) => {
-      const soldUrl = `http://localhost:3001/api/product/checkProductstatus/${item.product}`;
+      const soldUrl = `${process.env.REACT_APP_SERVER_URL}/api/product/checkProductstatus/${item.product}`;
       axios.get(soldUrl).then((response) => {
         if (response.data.sold) {
           alert("This product is already sold out.");
@@ -81,7 +81,9 @@ const Checkout = () => {
   };
   const updateProductStauts = (productId) => {
     axios
-      .put(`http://localhost:3001/api/product/mark-as-sold/${productId}`)
+      .put(
+        `${process.env.REACT_APP_SERVER_URL}/api/product/mark-as-sold/${productId}`
+      )
       .then((response) => {
         if (response.data.success) {
           alert("Payment successful.Product marked as sold.");
@@ -97,7 +99,7 @@ const Checkout = () => {
 
   const handlePayment = async () => {
     try {
-      const payUrl = "http://localhost:3001/api/product/payment";
+      const payUrl = `${process.env.REACT_APP_SERVER_URL}/api/product/payment`;
       const payload = {
         productIds: productIds,
       };
@@ -130,7 +132,7 @@ const Checkout = () => {
                 <img
                   src={
                     item.image
-                      ? `http://localhost:3001/${item.image}`
+                      ? `${process.env.REACT_APP_SERVER_URL}/${item.image}`
                       : "/images/furniture.jpg"
                   }
                   alt={item.name}

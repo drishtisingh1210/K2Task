@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import * as Heroicons from "heroicons-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import axios from "axios";
 import { toast } from "react-toastify";
 import axios from "../axios-config";
-import { logout } from "../../actions/userActions";
+import { loadUser, logout } from "../../actions/userActions";
 // import Layout from "./Layout";
 
 const Navbar = () => {
@@ -13,6 +13,7 @@ const Navbar = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   // const [logout, setLogout] = useState(false)
   // console.log(cartItems);
 
@@ -24,15 +25,16 @@ const Navbar = () => {
 
   const handleLogout = async (req, res) => {
     try {
-      const response = await axios.get("/api/user/logout");
-
-      if (response.status === 200) {
-        toast.success("Logged out Succesfully", {
-          theme: "dark",
-          position: "top-center",
-        });
-        navigate("/login");
-      }
+      dispatch(logout());
+      // dispatch(loadUser());
+      // const response = await axios.get("/api/user/logout");
+      // if (response.status === 200) {
+      //   toast.success("Logged out Succesfully", {
+      //     theme: "dark",
+      //     position: "top-center",
+      //   });
+      //   navigate("/login");
+      // }
     } catch (err) {
       console.log(err);
       toast.error("Failed to Logout", {

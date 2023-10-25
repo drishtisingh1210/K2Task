@@ -11,7 +11,7 @@ const Products = () => {
   const [productData, setData] = useState([]);
 
   useEffect(() => {
-    const apiUrl = "http://localhost:3001/api/product";
+    const apiUrl = `${process.env.REACT_APP_SERVER_URL}/api/product`;
     axios
       .get(apiUrl)
       .then((response) => {

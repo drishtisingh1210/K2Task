@@ -15,7 +15,7 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const Url = `http://localhost:3001/api/product/${productId}`;
+    const Url = `${process.env.REACT_APP_SERVER_URL}/api/product/${productId}`;
 
     axios
       .get(Url)

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // import Layout from "./components/Layout/Layout";
 import { Routes, Route } from "react-router-dom";
 import Products from "./components/Products";
@@ -26,7 +26,7 @@ import store from "./store";
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   // const dispatch = useDispatch();
-  useEffect(() => {
+  React.useEffect(() => {
     store.dispatch(loadUser());
   }, []);
 
@@ -43,10 +43,10 @@ const App = () => {
 
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/continueShopping" element={<Thanks />} />
-        <Route path="/sell" element={<PrivateRoute element={<SellPage />} />} />
+        <Route path="/sell" element={<PrivateRoute element={SellPage} />} />
         <Route
           path="/payment-slip"
-          element={<PrivateRoute element={<PaymentSlip />} />}
+          element={<PrivateRoute element={PaymentSlip} />}
         />
         <Route path="/categories" element={<Category />} />
         <Route path="/cart" element={<Cart />} />
@@ -54,10 +54,7 @@ const App = () => {
         <Route path="/category/:category" element={<CateogoryDisplay />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/checkout"
-          element={<PrivateRoute element={<Checkout />} />}
-        />
+        <Route path="/checkout" element={<PrivateRoute element={Checkout} />} />
       </Routes>
       <ToastContainer position="top-center" theme="dark" />
     </>

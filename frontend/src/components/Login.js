@@ -5,6 +5,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "./Layout/Footer";
+import { useDispatch } from "react-redux";
+import { login } from "../actions/userActions";
 
 const Login = () => {
   const [seePassword, setSeePassword] = useState(false);
@@ -15,6 +17,7 @@ const Login = () => {
 
   const { email, password } = formData;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,37 +28,49 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.preventDefault());
+    // console.log(e.preventDefault());
     // Here, you can implement your signup logic, e.g., sending data to the server.
-    console.log(formData);
+
+    // console.log(formData);
+
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/user/login",
-        formData,
-        { withCredentials: true }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        console.log("Logged in");
-        toast.success("Thanks for Login", {
-          theme: "dark",
-          position: "top-center",
-        });
-        setFormData({
-          email: "",
-          password: "",
-        });
-        //   } else if (response.status === 404) {
-        //     toast.warning("Id or Password not correct", {
-        //       theme: "dark",
-        //       position: "top-center",
-        //     });
-        //   } else {
+      dispatch(login(formData));
+      toast.success("Thanks for Login", {
+        theme: "dark",
+        position: "top-center",
+      });
+      setFormData({
+        email: "",
+        password: "",
+      });
+      navigate("/");
+      // const response = await axios.post(
+      //   "http://localhost:3001/api/user/login",
+      //   formData,
+      //   { withCredentials: true }
+      // );
+      // console.log(response);
+      // if (response.status === 200) {
+      //   console.log("Logged in");
+      //   toast.success("Thanks for Login", {
+      //     theme: "dark",
+      //     position: "top-center",
+      //   });
+      //   setFormData({
+      //     email: "",
+      //     password: "",
+      //   });
+      //   //   } else if (response.status === 404) {
+      //   //     toast.warning("Id or Password not correct", {
+      //   //       theme: "dark",
+      //   //       position: "top-center",
+      //   //     });
+      //   //   } else {
 
-        //     console.log("Failed to Login");
+      //   //     console.log("Failed to Login");
 
-        navigate("/");
-      }
+      //   navigate("/");
+      // }
     } catch (err) {
       console.log(err);
       toast.warning(

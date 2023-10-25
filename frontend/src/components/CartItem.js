@@ -12,7 +12,7 @@ const CartItem = ({ product, deleteCartItems }) => {
           <img
             src={
               product.image
-                ? `http://localhost:3001/${product.image}`
+                ? `${process.env.REACT_APP_SERVER_URL}/${product.image}`
                 : "/images/furniture.jpg"
             }
             alt={product.name}

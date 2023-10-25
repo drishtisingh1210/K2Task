@@ -7,7 +7,7 @@ const Category = () => {
   const [categories, setCategory] = useState([]);
   const imgPath = (categoryName) => `images/${categoryName}.jpg`;
   useEffect(() => {
-    const apiUrl = "http://localhost:3001/api/category/";
+    const apiUrl = `${process.env.REACT_APP_SERVER_URL}/api/category/`;
     axios
       .get(apiUrl)
       .then((response) => {
